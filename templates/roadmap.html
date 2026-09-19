@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Roadmap · SkillPath AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+<body class="app-page">
+
+  <header class="landing-nav">
+    <div class="landing-nav-inner">
+      <a href="{{ url_for('index') }}" class="brand">
+        <span class="brand-mark">SP</span>
+        <span class="brand-name">SkillPath&nbsp;AI</span>
+      </a>
+      <nav class="nav-links">
+        <a href="{{ url_for('index') }}">Home</a>
+        <a href="{{ url_for('profile') }}">Career Analysis</a>
+        <a href="{{ url_for('skills') }}">Skills</a>
+        <a href="{{ url_for('analysis') }}">Analysis</a>
+        <a href="{{ url_for('roadmap') }}">Roadmap</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="app-hero">
+    <div class="app-hero-inner">
+      <span class="hero-badge">
+        <span class="pulse-dot"></span>
+        Personalized Learning Plan
+      </span>
+      <h1>Your Roadmap to <span class="gradient-text">{{ career }}</span></h1>
+      <p class="app-hero-lead">
+        Prioritized learning path. Total estimated effort:
+        <strong>{{ total_hours }} hours</strong>.
+      </p>
+    </div>
+  </section>
+
+  <main class="app-main app-main-wide">
+
+    {% if not roadmap %}
+      <div class="panel empty-panel">
+        <h2>🎉 You're all set!</h2>
+        <p>No skill gaps detected for your target role. Focus on building
+          projects and deepening your expertise.</p>
+        <a href="{{ url_for('analysis') }}" class="btn btn-ghost">← Back to Analysis</a>
+      </div>
+    {% else %}
+
+      <ol class="roadmap">
+        {% for item in roadmap %}
+          <li class="roadmap-item priority-{{ item.priority|lower }}">
+            <div class="roadmap-marker">
+              <span class="roadmap-step">{{ loop.index }}</span>
+            </div>
+
+            <div class="roadmap-card">
+              <header class="roadmap-card-head">
+                <h3>{{ item.skill }}</h3>
+                <span class="badge
+                  {% if item.priority == 'High' %}badge-danger
+                  {% elif item.priority == 'Medium' %}badge-warning
+                  {% else %}badge-success{% endif %}">
+                  {{ item.priority }} Priority
+                </span>
+              </header>
+
+              <div class="roadmap-meta">
+                <span><strong>Current:</strong> {{ item.current }}/5</span>
+                <span><strong>Target:</strong> {{ item.required }}/5</span>
+                <span><strong>Gap:</strong> {{ item.gap }}</span>
+                <span><strong>Est. effort:</strong> {{ item.hours }} hrs</span>
+              </div>
+
+              <div class="bar">
+                <span class="bar-fill" style="width: {{ item.progress }}%;"></span>
+              </div>
+              <small class="bar-caption">{{ item.progress }}% of target reached</small>
+
+              <p class="roadmap-reco">{{ item.recommendation }}</p>
+
+              {% if item.resources %}
+                <div class="resources">
+                  <strong class="resources-title">📺 Recommended Resources</strong>
+                  <ul class="resource-list">
+                    {% for r in item.resources %}
+                      <li>
+                        <a href="{{ r.url }}" target="_blank" rel="noopener">
+                          <span class="resource-channel">{{ r.channel }}</span>
+                          <span class="resource-title">{{ r.title }}</span>
+                          <span class="resource-arrow">↗</span>
+                        </a>
+                      </li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              {% endif %}
+            </div>
+          </li>
+        {% endfor %}
+      </ol>
+
+    {% endif %}
+
+    <div class="form-actions">
+      <a href="{{ url_for('analysis') }}" class="btn btn-ghost">← Back to Analysis</a>
+      <a href="{{ url_for('reset') }}" class="btn btn-primary">Start Over</a>
+    </div>
+
+  </main>
+
+</body>
+</html>

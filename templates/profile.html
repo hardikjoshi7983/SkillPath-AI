@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Career Analysis · Step 1 · SkillPath AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+<body class="app-page">
+
+  <!-- ============ NAVBAR ============ -->
+  <header class="landing-nav">
+    <div class="landing-nav-inner">
+      <a href="{{ url_for('index') }}" class="brand">
+        <span class="brand-mark">SP</span>
+        <span class="brand-name">SkillPath&nbsp;AI</span>
+      </a>
+      <nav class="nav-links">
+        <a href="{{ url_for('index') }}">Home</a>
+        <a href="{{ url_for('profile') }}">Career Analysis</a>
+        <a href="{{ url_for('skills') }}">Skills</a>
+        <a href="{{ url_for('analysis') }}">Analysis</a>
+        <a href="{{ url_for('roadmap') }}">Roadmap</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ============ HERO ============ -->
+  <section class="app-hero">
+    <div class="app-hero-inner">
+      <span class="hero-badge">
+        <span class="pulse-dot"></span>
+        Career Analysis · Step 1 of 3
+      </span>
+      <h1>Tell Us About Yourself</h1>
+      <p class="app-hero-lead">
+        Your information helps SkillPath AI prepare the right skill
+        assessment for your target career.
+      </p>
+
+      <ol class="stepper">
+        <li class="stepper-item is-active">
+          <span class="stepper-num">1</span>
+          <span class="stepper-label">Profile</span>
+        </li>
+        <li class="stepper-item">
+          <span class="stepper-num">2</span>
+          <span class="stepper-label">Skills</span>
+        </li>
+        <li class="stepper-item">
+          <span class="stepper-num">3</span>
+          <span class="stepper-label">Analysis</span>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ============ FORM ============ -->
+  <main class="app-main">
+    <form class="app-form" method="POST" action="{{ url_for('profile') }}">
+
+      {% if error %}
+        <div class="alert alert-error">
+          <strong>Please fix the following:</strong>
+          <span>{{ error }}</span>
+        </div>
+      {% endif %}
+
+      <!-- ============ 01 Personal Information ============ -->
+      <section class="card">
+        <header class="card-head">
+          <div class="card-num">01</div>
+          <div class="card-title">
+            <h2>Personal Information</h2>
+            <p>Enter your basic details so we can personalize your roadmap.</p>
+          </div>
+        </header>
+
+        <div class="card-body">
+          <div class="form-grid">
+            <div class="form-field">
+              <label for="name">Full Name <span class="req">*</span></label>
+              <div class="input-wrap">
+                <span class="input-icon">👤</span>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  placeholder="e.g. Himanshu Sharma"
+                  autocomplete="name"
+                  value="{{ profile.name if profile and profile.name else '' }}"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="form-field">
+              <label for="email">Email Address <span class="req">*</span></label>
+              <div class="input-wrap">
+                <span class="input-icon">✉️</span>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  placeholder="you@example.com"
+                  autocomplete="email"
+                  value="{{ profile.email if profile and profile.email else '' }}"
+                  required
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ 02 Educational Background ============ -->
+      <section class="card">
+        <header class="card-head">
+          <div class="card-num">02</div>
+          <div class="card-title">
+            <h2>Educational Background</h2>
+            <p>Tell us about your degree, specialization, and current year.</p>
+          </div>
+        </header>
+
+        <div class="card-body">
+          <div class="form-grid">
+            <div class="form-field">
+              <label for="degree">Degree <span class="req">*</span></label>
+              <div class="select-wrap">
+                <select id="degree" name="degree" required>
+                  <option value="" disabled {% if not (profile and profile.degree) %}selected{% endif %}>
+                    Select your degree
+                  </option>
+                  {% for d in degrees %}
+                    <option value="{{ d }}" {% if profile and profile.degree == d %}selected{% endif %}>
+                      {{ d }}
+                    </option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+
+            <div class="form-field">
+              <label for="course">Specialization <span class="req">*</span></label>
+              <div class="select-wrap">
+                <select id="course" name="course" required>
+                  <option value="" disabled {% if not (profile and profile.course) %}selected{% endif %}>
+                    Select your specialization
+                  </option>
+                  {% for group, options in specialization_groups.items() %}
+                    <optgroup label="{{ group }}">
+                      {% for opt in options %}
+                        <option value="{{ opt }}" {% if profile and profile.course == opt %}selected{% endif %}>
+                          {{ opt }}
+                        </option>
+                      {% endfor %}
+                    </optgroup>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+
+            <div class="form-field">
+              <label for="year">Current Year <span class="req">*</span></label>
+              <div class="select-wrap">
+                <select id="year" name="year" required>
+                  <option value="" disabled {% if not (profile and profile.year) %}selected{% endif %}>
+                    Select year
+                  </option>
+                  {% for y in ["1", "2", "3", "4", "5+"] %}
+                    <option value="{{ y }}" {% if profile and profile.year == y %}selected{% endif %}>
+                      Year {{ y }}
+                    </option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ 03 Target Career ============ -->
+      <section class="card">
+        <header class="card-head">
+          <div class="card-num">03</div>
+          <div class="card-title">
+            <h2>Target Career</h2>
+            <p>Which role are you aiming for? We'll tailor everything to it.</p>
+          </div>
+        </header>
+
+        <div class="card-body">
+          <div class="form-field">
+            <label for="career">Career Role <span class="req">*</span></label>
+            <div class="select-wrap">
+              <select id="career" name="career" required>
+                <option value="" disabled {% if not (profile and profile.career) %}selected{% endif %}>
+                  Select your target career
+                </option>
+                {% for category, roles in career_categories.items() %}
+                  <optgroup label="{{ category }}">
+                    {% for role in roles %}
+                      <option value="{{ role }}" {% if profile and profile.career == role %}selected{% endif %}>
+                        {{ role }}
+                      </option>
+                    {% endfor %}
+                  </optgroup>
+                {% endfor %}
+              </select>
+            </div>
+            <p class="form-hint">
+              💡 Tip: Not sure yet? Pick any role — you can change it later.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ ACTIONS ============ -->
+      <div class="form-actions form-actions-sticky">
+        <a href="{{ url_for('index') }}" class="btn btn-ghost">← Back Home</a>
+        <button type="submit" class="btn btn-primary">
+          Continue to Skills <span class="btn-arrow">→</span>
+        </button>
+      </div>
+    </form>
+  </main>
+
+</body>
+</html>

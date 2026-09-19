@@ -1,0 +1,53 @@
+skill,category
+Python,Programming
+NumPy,Data Science
+Pandas,Data Science
+Statistics,Mathematics
+Machine Learning,AI/ML
+Scikit-learn,AI/ML
+SQL,Database
+Git,Tools
+Docker,DevOps
+FastAPI,Backend
+Data Visualization,Data Science
+Excel,Analytics
+Power BI,Analytics
+Tableau,Analytics
+Deep Learning,AI/ML
+PyTorch,AI/ML
+Computer Vision,AI/ML
+OpenCV,AI/ML
+NLP,AI/ML
+Transformers,AI/ML
+REST API,Backend
+Linux,Tools
+PostgreSQL,Database
+MySQL,Database
+OOP,Programming
+Testing,Software Development
+Data Structures,Computer Science
+Algorithms,Computer Science
+System Design,Software Development
+ETL,Data Engineering
+Data Warehousing,Data Engineering
+Apache Spark,Data Engineering
+Networking,Cybersecurity
+Cybersecurity,Cybersecurity
+Cryptography,Cybersecurity
+Web Security,Cybersecurity
+SIEM,Cybersecurity
+Incident Response,Cybersecurity
+AWS,Cloud
+Kubernetes,DevOps
+Terraform,DevOps
+CI/CD,DevOps
+Business Analysis,Business
+Communication,Soft Skills
+Product Analytics,Analytics
+A/B Testing,Analytics
+Database Administration,Database
+Backup and Recovery,Database
+Database Security,Database
+Research,Research
+Linear Algebra,Mathematics
+Calculus,Mathematics

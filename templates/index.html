@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SkillPath AI — Discover Your Career Path</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+<body class="landing-page">
+
+  <header class="landing-nav">
+    <div class="landing-nav-inner">
+      <a href="{{ url_for('index') }}" class="brand">
+        <span class="brand-mark">SP</span>
+        <span class="brand-name">SkillPath&nbsp;AI</span>
+      </a>
+      <nav class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#how">How it works</a>
+        <a href="#domains">Domains</a>
+        <a href="{{ url_for('profile') }}" class="nav-cta">Get Started</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero" id="top">
+    <div class="hero-bg" aria-hidden="true">
+      <span class="orb orb-1"></span>
+      <span class="orb orb-2"></span>
+      <span class="orb orb-3"></span>
+      <span class="orb orb-4"></span>
+      <div class="grid-overlay"></div>
+      <div class="noise-overlay"></div>
+    </div>
+
+    <div class="hero-content">
+      <span class="hero-badge">
+        <span class="pulse-dot"></span>
+        AI-Powered Career Guidance
+      </span>
+
+      <h1>
+        Find Your Perfect
+        <span class="gradient-text">Career Path</span>
+      </h1>
+
+      <p class="hero-lead">
+        Analyze your current skills, discover the gaps holding you back,
+        and get a personalized learning roadmap across
+        <strong>{{ category_count }}</strong> domains and
+        <strong>{{ career_count }}</strong> career roles.
+      </p>
+
+      <div class="hero-actions">
+        <a href="{{ url_for('profile') }}" class="btn btn-primary">
+          Start Your Analysis <span class="btn-arrow">→</span>
+        </a>
+        <a href="#how" class="btn btn-ghost">See How It Works</a>
+      </div>
+
+      <div class="hero-stats">
+        <div class="stat">
+          <strong>{{ career_count }}</strong>
+          <span>Career Roles</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <strong>{{ skill_count }}</strong>
+          <span>Skills Mapped</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <strong>{{ category_count }}</strong>
+          <span>Domains</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-fade"></div>
+  </section>
+
+  <section class="section" id="features">
+    <div class="section-inner">
+      <header class="section-head">
+        <h2>Everything you need to level up</h2>
+        <p>Built for students, career switchers, and professionals.</p>
+      </header>
+
+      <div class="feature-grid">
+        <article class="feature-card">
+          <div class="feature-icon">🎯</div>
+          <h3>Skill Gap Analysis</h3>
+          <p>See exactly which skills you're missing for your target role and by how much.</p>
+        </article>
+        <article class="feature-card">
+          <div class="feature-icon">🧠</div>
+          <h3>AI Readiness Score</h3>
+          <p>Get an instant readiness score powered by our trained proficiency model.</p>
+        </article>
+        <article class="feature-card">
+          <div class="feature-icon">🗺️</div>
+          <h3>Personalized Roadmap</h3>
+          <p>A step-by-step learning plan prioritized by the biggest gaps first.</p>
+        </article>
+        <article class="feature-card">
+          <div class="feature-icon">🎥</div>
+          <h3>Curated Resources</h3>
+          <p>Hand-picked YouTube channels and courses for every skill in your path.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt" id="how">
+    <div class="section-inner">
+      <header class="section-head">
+        <h2>How SkillPath AI works</h2>
+        <p>Four simple steps from confusion to clarity.</p>
+      </header>
+
+      <ol class="steps">
+        <li class="step">
+          <span class="step-num">1</span>
+          <h3>Create your profile</h3>
+          <p>Tell us your degree, course, year, and the role you're aiming for.</p>
+        </li>
+        <li class="step">
+          <span class="step-num">2</span>
+          <h3>Rate your skills</h3>
+          <p>Self-assess each required skill from 0 (none) to 5 (expert).</p>
+        </li>
+        <li class="step">
+          <span class="step-num">3</span>
+          <h3>Get your analysis</h3>
+          <p>See your readiness score, strengths, and prioritized gaps.</p>
+        </li>
+        <li class="step">
+          <span class="step-num">4</span>
+          <h3>Follow your roadmap</h3>
+          <p>Learn with recommended resources and track your progress.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section" id="domains">
+    <div class="section-inner">
+      <header class="section-head">
+        <h2>Explore career domains</h2>
+        <p>{{ category_count }} domains · {{ career_count }} roles to choose from.</p>
+      </header>
+
+      <div class="domain-grid">
+        {% for category, roles in career_categories.items() %}
+          <div class="domain-card">
+            <h3>{{ category }}</h3>
+            <ul>
+              {% for role in roles %}
+                <li>{{ role }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <div class="cta-inner">
+      <h2>Ready to find your path?</h2>
+      <p>Takes less than 2 minutes. No signup required.</p>
+      <a href="{{ url_for('profile') }}" class="btn btn-primary btn-lg">
+        Analyze My Skills →
+      </a>
+    </div>
+  </section>
+
+  <footer class="landing-footer">
+    <div class="footer-inner">
+      <div class="brand">
+        <span class="brand-mark">SP</span>
+        <span class="brand-name">SkillPath&nbsp;AI</span>
+      </div>
+      <p class="footer-copy">© {{ now.year }} SkillPath AI · Built with Flask &amp; ❤️</p>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Analysis · Step 3 · SkillPath AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+<body class="app-page">
+
+  <header class="landing-nav">
+    <div class="landing-nav-inner">
+      <a href="{{ url_for('index') }}" class="brand">
+        <span class="brand-mark">SP</span>
+        <span class="brand-name">SkillPath&nbsp;AI</span>
+      </a>
+      <nav class="nav-links">
+        <a href="{{ url_for('index') }}">Home</a>
+        <a href="{{ url_for('profile') }}">Career Analysis</a>
+        <a href="{{ url_for('skills') }}">Skills</a>
+        <a href="{{ url_for('analysis') }}">Analysis</a>
+        <a href="{{ url_for('roadmap') }}">Roadmap</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="app-hero">
+    <div class="app-hero-inner">
+      <span class="hero-badge">
+        <span class="pulse-dot"></span>
+        Career Analysis · Step 3 of 3
+      </span>
+      <h1>Your Career Readiness</h1>
+      <p class="app-hero-lead">
+        Here's how ready you are for <strong>{{ career }}</strong>, based on
+        your self-assessment.
+      </p>
+
+      <ol class="stepper">
+        <li class="stepper-item is-done">
+          <span class="stepper-num">✓</span>
+          <span class="stepper-label">Profile</span>
+        </li>
+        <li class="stepper-item is-done">
+          <span class="stepper-num">✓</span>
+          <span class="stepper-label">Skills</span>
+        </li>
+        <li class="stepper-item is-active">
+          <span class="stepper-num">3</span>
+          <span class="stepper-label">Analysis</span>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <main class="app-main app-main-wide">
+
+    <!-- ============ Summary Cards ============ -->
+    <section class="summary-grid">
+      <div class="summary-card summary-card-primary">
+        <span class="summary-label">Overall Readiness</span>
+        <span class="summary-value">{{ overall_score }}<small>%</small></span>
+        <span class="summary-tier {{ tier }}">{{ level }}</span>
+        <p class="summary-message">{{ message }}</p>
+      </div>
+
+      <div class="summary-card">
+        <span class="summary-label">AI Confidence</span>
+        <span class="summary-value">{{ ml_confidence }}<small>%</small></span>
+        <p class="summary-message">
+          Model-derived estimate based on your skill profile.
+        </p>
+      </div>
+
+      <div class="summary-card">
+        <span class="summary-label">Total Score</span>
+        <span class="summary-value">{{ total_score }}<small>/ {{ maximum_score }}</small></span>
+        <p class="summary-message">
+          Sum of your self-ratings across all required skills.
+        </p>
+      </div>
+
+      <div class="summary-card">
+        <span class="summary-label">Estimated Study Time</span>
+        <span class="summary-value">{{ total_hours }}<small>hrs</small></span>
+        <p class="summary-message">
+          ≈ {{ estimated_weeks }} week{{ '' if estimated_weeks == 1 else 's' }}
+          at 10 hrs/week.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============ Rating Distribution Pie ============ -->
+    <section class="panel">
+      <header class="panel-head">
+        <h2>Rating Distribution</h2>
+        <p>How your self-ratings break down across all skills.</p>
+      </header>
+
+      <div class="pie-wrap">
+        <div class="pie" style="background: {{ pie_style }};">
+          <div class="pie-hole">
+            <strong>{{ overall_score }}%</strong>
+            <span>Readiness</span>
+          </div>
+        </div>
+
+        <ul class="pie-legend">
+          {% set labels = {
+            0: '0 · None',
+            1: '1 · Beginner',
+            2: '2 · Basic',
+            3: '3 · Intermediate',
+            4: '4 · Advanced',
+            5: '5 · Expert'
+          } %}
+          {% set colors = {
+            0: '#cbd5e1',
+            1: '#ef4444',
+            2: '#f59e0b',
+            3: '#facc15',
+            4: '#14b8a6',
+            5: '#2563eb'
+          } %}
+          {% for score in range(6) %}
+            <li>
+              <span class="dot" style="background: {{ colors[score] }};"></span>
+              <span>{{ labels[score] }}</span>
+              <strong>{{ rating_distribution[score] }}</strong>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ Strengths & Gaps ============ -->
+    <section class="two-col">
+      <div class="panel">
+        <header class="panel-head">
+          <h2>💪 Your Strengths</h2>
+          <p>Skills you rated 4 or higher.</p>
+        </header>
+
+        {% if strong_skills %}
+          <ul class="chip-list">
+            {% for item in strong_skills %}
+              <li class="chip chip-success">
+                {{ item.skill }} <span>{{ item.current }}/5</span>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="empty">No strengths rated 4+ yet — you're still building!</p>
+        {% endif %}
+      </div>
+
+      <div class="panel">
+        <header class="panel-head">
+          <h2>🚨 High Priority Gaps</h2>
+          <p>Skills with a gap of 2 or more levels.</p>
+        </header>
+
+        {% if high_priority %}
+          <ul class="chip-list">
+            {% for item in high_priority %}
+              <li class="chip chip-danger">
+                {{ item.skill }}
+                <span>{{ item.current }} → {{ item.required }}</span>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="empty">No high-priority gaps. Nice work!</p>
+        {% endif %}
+      </div>
+    </section>
+
+    <!-- ============ Full Skill Table ============ -->
+    <section class="panel">
+      <header class="panel-head">
+        <h2>Full Skill Breakdown</h2>
+        <p>Every required skill, your rating, target, and gap.</p>
+      </header>
+
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Skill</th>
+              <th>Your Level</th>
+              <th>Target</th>
+              <th>Gap</th>
+              <th>Status</th>
+              <th>Study Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in results %}
+              <tr>
+                <td><strong>{{ item.skill }}</strong></td>
+                <td>
+                  <div class="bar bar-inline">
+                    <span class="bar-fill" style="width: {{ item.percentage }}%;"></span>
+                  </div>
+                  <small>{{ item.current }}/5 · {{ item.level }}</small>
+                </td>
+                <td>{{ item.required }}/5</td>
+                <td>
+                  {% if item.gap == 0 %}
+                    <span class="badge badge-success">0</span>
+                  {% elif item.gap == 1 %}
+                    <span class="badge badge-warning">1</span>
+                  {% else %}
+                    <span class="badge badge-danger">{{ item.gap }}</span>
+                  {% endif %}
+                </td>
+                <td>
+                  <span class="badge
+                    {% if item.status == 'On Track' %}badge-success
+                    {% elif item.status == 'Small Gap' %}badge-warning
+                    {% elif item.status == 'Medium Gap' %}badge-warning
+                    {% else %}badge-danger{% endif %}">
+                    {{ item.status }}
+                  </span>
+                </td>
+                <td>{{ item.hours }} hrs</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <div class="form-actions">
+      <a href="{{ url_for('skills') }}" class="btn btn-ghost">← Edit Skills</a>
+      <a href="{{ url_for('roadmap') }}" class="btn btn-primary">
+        View Your Roadmap <span class="btn-arrow">→</span>
+      </a>
+    </div>
+
+  </main>
+
+</body>
+</html>

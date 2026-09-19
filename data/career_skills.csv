@@ -1,0 +1,164 @@
+career,skill,required_level
+Machine Learning Engineer,Python,5
+Machine Learning Engineer,NumPy,4
+Machine Learning Engineer,Pandas,4
+Machine Learning Engineer,Statistics,5
+Machine Learning Engineer,Machine Learning,5
+Machine Learning Engineer,Scikit-learn,5
+Machine Learning Engineer,SQL,4
+Machine Learning Engineer,Git,3
+Machine Learning Engineer,Docker,3
+Machine Learning Engineer,FastAPI,3
+Data Scientist,Python,5
+Data Scientist,SQL,4
+Data Scientist,Statistics,5
+Data Scientist,Pandas,5
+Data Scientist,NumPy,4
+Data Scientist,Machine Learning,5
+Data Scientist,Data Visualization,4
+Data Scientist,Scikit-learn,4
+Data Scientist,Git,3
+Data Analyst,SQL,5
+Data Analyst,Excel,5
+Data Analyst,Python,4
+Data Analyst,Pandas,4
+Data Analyst,Statistics,4
+Data Analyst,Data Visualization,5
+Data Analyst,Power BI,5
+Data Analyst,Tableau,4
+Data Analyst,Git,2
+AI Engineer,Python,5
+AI Engineer,NumPy,4
+AI Engineer,Pandas,4
+AI Engineer,Machine Learning,5
+AI Engineer,Deep Learning,5
+AI Engineer,PyTorch,5
+AI Engineer,Computer Vision,4
+AI Engineer,NLP,4
+AI Engineer,Git,4
+AI Engineer,Docker,4
+Backend Developer,Python,5
+Backend Developer,SQL,5
+Backend Developer,Git,4
+Backend Developer,FastAPI,5
+Backend Developer,REST API,5
+Backend Developer,Docker,4
+Backend Developer,Linux,4
+Backend Developer,PostgreSQL,5
+Python Developer,Python,5
+Python Developer,SQL,4
+Python Developer,Git,4
+Python Developer,FastAPI,4
+Python Developer,REST API,4
+Python Developer,OOP,5
+Python Developer,Testing,4
+Python Developer,Docker,3
+Full Stack Developer,Python,4
+Full Stack Developer,HTML,4
+Full Stack Developer,CSS,4
+Full Stack Developer,JavaScript,5
+Full Stack Developer,SQL,4
+Full Stack Developer,REST API,5
+Full Stack Developer,Git,4
+Full Stack Developer,Docker,3
+Software Engineer,Python,4
+Software Engineer,Data Structures,5
+Software Engineer,Algorithms,5
+Software Engineer,OOP,5
+Software Engineer,SQL,4
+Software Engineer,Git,4
+Software Engineer,Testing,4
+Software Engineer,System Design,4
+Data Engineer,Python,5
+Data Engineer,SQL,5
+Data Engineer,Pandas,4
+Data Engineer,ETL,5
+Data Engineer,Data Warehousing,5
+Data Engineer,Apache Spark,4
+Data Engineer,Docker,4
+Data Engineer,Git,4
+Data Engineer,Linux,4
+Cloud Engineer,Linux,5
+Cloud Engineer,Networking,5
+Cloud Engineer,AWS,5
+Cloud Engineer,Docker,5
+Cloud Engineer,Kubernetes,4
+Cloud Engineer,Python,3
+Cloud Engineer,Git,4
+Cloud Engineer,Terraform,4
+DevOps Engineer,Linux,5
+DevOps Engineer,Git,5
+DevOps Engineer,Docker,5
+DevOps Engineer,Kubernetes,5
+DevOps Engineer,CI/CD,5
+DevOps Engineer,AWS,4
+DevOps Engineer,Python,4
+DevOps Engineer,Terraform,4
+Cybersecurity Analyst,Networking,5
+Cybersecurity Analyst,Linux,5
+Cybersecurity Analyst,Cybersecurity,5
+Cybersecurity Analyst,Python,3
+Cybersecurity Analyst,Cryptography,4
+Cybersecurity Analyst,Web Security,4
+Cybersecurity Analyst,SIEM,4
+Cybersecurity Analyst,Incident Response,5
+Business Analyst,Excel,5
+Business Analyst,SQL,4
+Business Analyst,Statistics,4
+Business Analyst,Data Visualization,4
+Business Analyst,Power BI,4
+Business Analyst,Business Analysis,5
+Business Analyst,Communication,5
+Product Analyst,SQL,5
+Product Analyst,Python,4
+Product Analyst,Statistics,5
+Product Analyst,Excel,4
+Product Analyst,Data Visualization,5
+Product Analyst,Product Analytics,5
+Product Analyst,A/B Testing,4
+BI Developer,SQL,5
+BI Developer,Power BI,5
+BI Developer,Tableau,5
+BI Developer,Excel,4
+BI Developer,Data Warehousing,4
+BI Developer,ETL,4
+BI Developer,Data Visualization,5
+Computer Vision Engineer,Python,5
+Computer Vision Engineer,NumPy,4
+Computer Vision Engineer,OpenCV,5
+Computer Vision Engineer,Machine Learning,5
+Computer Vision Engineer,Deep Learning,5
+Computer Vision Engineer,PyTorch,5
+Computer Vision Engineer,Computer Vision,5
+Computer Vision Engineer,Git,4
+NLP Engineer,Python,5
+NLP Engineer,Machine Learning,4
+NLP Engineer,Deep Learning,5
+NLP Engineer,NLP,5
+NLP Engineer,Transformers,5
+NLP Engineer,PyTorch,4
+NLP Engineer,Statistics,4
+NLP Engineer,Git,4
+AI/ML Researcher,Python,5
+AI/ML Researcher,Statistics,5
+AI/ML Researcher,Linear Algebra,5
+AI/ML Researcher,Calculus,2
+AI/ML Researcher,Machine Learning,3
+AI/ML Researcher,Deep Learning,5
+AI/ML Researcher,PyTorch,5
+AI/ML Researcher,Research,5
+Database Administrator,SQL,5
+Database Administrator,PostgreSQL,5
+Database Administrator,MySQL,5
+Database Administrator,Linux,4
+Database Administrator,Database Administration,5
+Database Administrator,Backup and Recovery,5
+Database Administrator,Database Security,4
+MLOps Engineer,Python,5
+MLOps Engineer,Machine Learning,5
+MLOps Engineer,Docker,5
+MLOps Engineer,Kubernetes,5
+MLOps Engineer,Git,5
+MLOps Engineer,CI/CD,5
+MLOps Engineer,AWS,4
+MLOps Engineer,FastAPI,4

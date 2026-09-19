@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Skill Assessment · Step 2 · SkillPath AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+<body class="app-page">
+
+  <!-- ============ NAVBAR ============ -->
+  <header class="landing-nav">
+    <div class="landing-nav-inner">
+      <a href="{{ url_for('index') }}" class="brand">
+        <span class="brand-mark">SP</span>
+        <span class="brand-name">SkillPath&nbsp;AI</span>
+      </a>
+      <nav class="nav-links">
+        <a href="{{ url_for('index') }}">Home</a>
+        <a href="{{ url_for('profile') }}">Career Analysis</a>
+        <a href="{{ url_for('skills') }}">Skills</a>
+        <a href="{{ url_for('analysis') }}">Analysis</a>
+        <a href="{{ url_for('roadmap') }}">Roadmap</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ============ HERO ============ -->
+  <section class="app-hero">
+    <div class="app-hero-inner">
+      <span class="hero-badge">
+        <span class="pulse-dot"></span>
+        Career Analysis · Step 2 of 3
+      </span>
+      <h1>Rate Your Skills</h1>
+      <p class="app-hero-lead">
+        For <strong>{{ career }}</strong>, rate yourself on each skill
+        from <strong>0</strong> (no experience) to <strong>5</strong> (expert).
+      </p>
+
+      <ol class="stepper">
+        <li class="stepper-item is-done">
+          <span class="stepper-num">✓</span>
+          <span class="stepper-label">Profile</span>
+        </li>
+        <li class="stepper-item is-active">
+          <span class="stepper-num">2</span>
+          <span class="stepper-label">Skills</span>
+        </li>
+        <li class="stepper-item">
+          <span class="stepper-num">3</span>
+          <span class="stepper-label">Analysis</span>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ============ FORM ============ -->
+  <main class="app-main app-main-wide">
+    <form class="app-form" method="POST" action="{{ url_for('skills') }}">
+
+      {% if error %}
+        <div class="alert alert-error">
+          <strong>Please fix the following:</strong>
+          <span>{{ error }}</span>
+        </div>
+      {% endif %}
+
+      <!-- ============ Skill Self-Assessment Card ============ -->
+      <section class="card">
+        <header class="card-head">
+          <div class="card-num">01</div>
+          <div class="card-title">
+            <h2>Skill Self-Assessment</h2>
+            <p>Required skill levels for <strong>{{ career }}</strong> are shown on each card.</p>
+          </div>
+        </header>
+
+        <div class="card-body">
+          <div class="skill-grid">
+            {% for skill in skills %}
+              {% set current = ratings.get(skill, 0) %}
+              {% set target = required.get(skill, 3) %}
+              {% set outer_idx = loop.index %}
+              {% set skill_slug = skill|replace(' ', '-')|replace('&', 'and')|replace('/', '-') %}
+
+              <div class="skill-card">
+                <div class="skill-card-head">
+                  <h3 class="skill-name">{{ skill }}</h3>
+                  <span class="skill-target-badge">Target {{ target }}/5</span>
+                </div>
+
+                <div class="skill-rating" role="radiogroup" aria-label="{{ skill }} rating">
+                  {% for value in [0, 1, 2, 3, 4, 5] %}
+                    <input
+                      type="radio"
+                      id="s{{ outer_idx }}-{{ skill_slug }}-{{ value }}"
+                      name="{{ skill }}"
+                      value="{{ value }}"
+                      {% if current == value %}checked{% endif %}
+                    />
+                    <label
+                      for="s{{ outer_idx }}-{{ skill_slug }}-{{ value }}"
+                      class="rating-pill"
+                    >{{ value }}</label>
+                  {% endfor %}
+                </div>
+
+                <div class="skill-scale-hint">
+                  <span>None</span>
+                  <span>Expert</span>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ ACTIONS ============ -->
+      <div class="form-actions form-actions-sticky">
+        <a href="{{ url_for('profile') }}" class="btn btn-ghost">← Back</a>
+        <button type="submit" class="btn btn-primary">
+          Generate Analysis <span class="btn-arrow">→</span>
+        </button>
+      </div>
+    </form>
+  </main>
+
+</body>
+</html>

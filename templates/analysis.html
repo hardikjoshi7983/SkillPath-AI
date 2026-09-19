@@ -58,6 +58,26 @@
 
   <main class="app-main app-main-wide">
 
+    <!-- ============ Readiness Overview ============ -->
+    <section class="readiness-hero" style="--score: {{ overall_score|default(0) }};">
+      <div class="readiness-gauge">
+        <div class="readiness-gauge-inner">
+          <span class="readiness-gauge-value">{{ overall_score }}%</span>
+          <span class="readiness-gauge-label">Career readiness</span>
+        </div>
+      </div>
+      <div class="readiness-copy">
+        <span class="readiness-kicker">Your career skills readiness</span>
+        <h2>{{ level }} for {{ career }}</h2>
+        <p>{{ message }}</p>
+        <div class="readiness-mini-grid">
+          <div class="readiness-mini"><strong>{{ total_score }}</strong><span>Your score</span></div>
+          <div class="readiness-mini"><strong>{{ maximum_score }}</strong><span>Maximum</span></div>
+          <div class="readiness-mini"><strong>{{ ml_confidence }}%</strong><span>Model confidence</span></div>
+        </div>
+      </div>
+    </section>
+
     <!-- ============ Summary Cards ============ -->
     <section class="summary-grid">
       <div class="summary-card summary-card-primary">
@@ -94,14 +114,31 @@
     </section>
 
     <!-- ============ Rating Distribution Pie ============ -->
-    <section class="panel">
-      <header class="panel-head">
-        <h2>Rating Distribution</h2>
-        <p>How your self-ratings break down across all skills.</p>
+    <section class="panel readiness-chart-panel">
+      <header class="readiness-chart-head">
+        <div>
+          <h2>Skill Rating Distribution</h2>
+          <p>See how your current self-ratings are distributed across the required skills.</p>
+        </div>
+        <span class="chart-badge">6 skill levels · 0 to 5</span>
       </header>
 
+      {% set rating_total = rating_distribution|sum %}
+      {% set pie_ns = namespace(start=0, parts=[]) %}
+      {% set pie_colors = ['#E56B2F', '#F29A52', '#2F7D5B', '#6A9F82', '#20231F', '#B8AFA0'] %}
+      {% if rating_total > 0 %}
+        {% for score in range(6) %}
+          {% set slice = (rating_distribution[score] / rating_total * 100) %}
+          {% set finish = pie_ns.start + slice %}
+          {% set _ = pie_ns.parts.append(pie_colors[score] ~ ' ' ~ pie_ns.start ~ '% ' ~ finish ~ '%') %}
+          {% set pie_ns.start = finish %}
+        {% endfor %}
+      {% else %}
+        {% set pie_ns.parts = ['#E9E3D8 0% 100%'] %}
+      {% endif %}
+
       <div class="pie-wrap">
-        <div class="pie" style="background: {{ pie_style }};">
+        <div class="pie" style="background: conic-gradient({{ pie_ns.parts|join(', ') }});">
           <div class="pie-hole">
             <strong>{{ overall_score }}%</strong>
             <span>Readiness</span>
@@ -118,12 +155,12 @@
             5: '5 · Expert'
           } %}
           {% set colors = {
-            0: '#cbd5e1',
-            1: '#ef4444',
-            2: '#f59e0b',
-            3: '#facc15',
-            4: '#14b8a6',
-            5: '#2563eb'
+            0: '#E56B2F',
+            1: '#F29A52',
+            2: '#2F7D5B',
+            3: '#6A9F82',
+            4: '#20231F',
+            5: '#B8AFA0'
           } %}
           {% for score in range(6) %}
             <li>
@@ -178,59 +215,102 @@
       </div>
     </section>
 
-    <!-- ============ Full Skill Table ============ -->
+    <!-- ============ Visual Skill Readiness ============ -->
     <section class="panel">
       <header class="panel-head">
-        <h2>Full Skill Breakdown</h2>
-        <p>Every required skill, your rating, target, and gap.</p>
+        <h2>Career Skills Readiness</h2>
+        <p>A quick visual view of where each required skill currently stands.</p>
+      </header>
+      <div class="skill-readiness-grid">
+        {% for item in results %}
+          <div class="skill-readiness-item">
+            <div class="skill-readiness-top">
+              <span>{{ item.skill }}</span>
+              <span>{{ item.current }}/{{ item.required }}</span>
+            </div>
+            <div class="skill-readiness-bar">
+              <span style="--w: {{ item.percentage }}%;"></span>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </section>
+
+    <!-- ============ Full Skill Breakdown ============ -->
+    <section class="panel full-breakdown-panel">
+      <header class="panel-head breakdown-head">
+        <div>
+          <span class="breakdown-kicker">Detailed skill map</span>
+          <h2>Full Skill Breakdown</h2>
+          <p>Compare every required skill in one clear row-and-column view.</p>
+        </div>
+        <div class="breakdown-summary">
+          <div><strong>{{ results|length }}</strong><span>Skills</span></div>
+          <div><strong>{{ total_score }}</strong><span>Your points</span></div>
+          <div><strong>{{ maximum_score }}</strong><span>Target points</span></div>
+        </div>
       </header>
 
-      <div class="table-wrap">
-        <table class="data-table">
+      <div class="breakdown-table-wrap">
+        <table class="breakdown-table">
           <thead>
             <tr>
+              <th>#</th>
               <th>Skill</th>
               <th>Your Level</th>
               <th>Target</th>
+              <th>Progress</th>
               <th>Gap</th>
+              <th>Study Estimate</th>
               <th>Status</th>
-              <th>Study Time</th>
             </tr>
           </thead>
           <tbody>
             {% for item in results %}
-              <tr>
-                <td><strong>{{ item.skill }}</strong></td>
-                <td>
-                  <div class="bar bar-inline">
-                    <span class="bar-fill" style="width: {{ item.percentage }}%;"></span>
-                  </div>
-                  <small>{{ item.current }}/5 · {{ item.level }}</small>
-                </td>
-                <td>{{ item.required }}/5</td>
-                <td>
-                  {% if item.gap == 0 %}
-                    <span class="badge badge-success">0</span>
-                  {% elif item.gap == 1 %}
-                    <span class="badge badge-warning">1</span>
-                  {% else %}
-                    <span class="badge badge-danger">{{ item.gap }}</span>
-                  {% endif %}
-                </td>
-                <td>
-                  <span class="badge
-                    {% if item.status == 'On Track' %}badge-success
-                    {% elif item.status == 'Small Gap' %}badge-warning
-                    {% elif item.status == 'Medium Gap' %}badge-warning
-                    {% else %}badge-danger{% endif %}">
-                    {{ item.status }}
-                  </span>
-                </td>
-                <td>{{ item.hours }} hrs</td>
-              </tr>
+            <tr class="breakdown-row" style="--row-delay: {{ loop.index0 * 0.06 }}s;">
+              <td><span class="breakdown-index">{{ '%02d'|format(loop.index) }}</span></td>
+              <td>
+                <div class="table-skill-name">
+                  <strong>{{ item.skill }}</strong>
+                  <span>{{ item.level }}</span>
+                </div>
+              </td>
+              <td><span class="rating-pill current-pill">{{ item.current }}/5</span></td>
+              <td><span class="rating-pill target-pill">{{ item.required }}/5</span></td>
+              <td class="progress-cell">
+                <div class="table-progress-head">
+                  <span>{{ item.percentage }}%</span>
+                </div>
+                <div class="table-progress-track">
+                  <span style="--w: {{ item.percentage }}%;"></span>
+                  <i style="--target: {{ (item.required / 5 * 100) }}%;"></i>
+                </div>
+              </td>
+              <td>
+                <strong class="table-gap {% if item.gap == 0 %}gap-good{% elif item.gap == 1 %}gap-mid{% else %}gap-high{% endif %}">
+                  {% if item.gap == 0 %}Ready{% else %}{{ item.gap }} level{{ '' if item.gap == 1 else 's' }}{% endif %}
+                </strong>
+              </td>
+              <td><span class="hours-value">{{ item.hours }} hrs</span></td>
+              <td>
+                <span class="table-status
+                  {% if item.status == 'On Track' %}status-success
+                  {% elif item.status == 'Small Gap' %}status-warning
+                  {% elif item.status == 'Medium Gap' %}status-warning
+                  {% else %}status-danger{% endif %}">
+                  {{ item.status }}
+                </span>
+              </td>
+            </tr>
             {% endfor %}
           </tbody>
         </table>
+      </div>
+
+      <div class="breakdown-legend">
+        <span><i class="legend-current"></i>Your current level</span>
+        <span><i class="legend-target"></i>Career target</span>
+        <span>Progress is based on your self-rating</span>
       </div>
     </section>
 
